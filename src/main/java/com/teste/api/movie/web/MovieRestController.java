@@ -40,6 +40,9 @@ public class MovieRestController {
     public ResponseEntity<?> maxMinIntervalWin() {
         List<Movie> winningMovies = movieQuery.findAll(movieWinner());
 
+        if(winningMovies.size() == 0)
+            return  ResponseEntity.noContent().build();
+
         Map<String, List<Movie>> moviesPerProducers = winningMovies.stream()
                 .flatMap(m -> m.splitProducers().stream())
                 .sorted()
