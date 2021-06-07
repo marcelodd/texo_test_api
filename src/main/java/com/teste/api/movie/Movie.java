@@ -1,12 +1,18 @@
 package com.teste.api.movie;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.csv.CSVRecord;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Marcelo Castro - marceloddcastro@gmail.com
@@ -25,6 +31,17 @@ public class Movie implements Serializable {
     private String studios;
     private String producers;
     private boolean winner;
+
+    public List<Movie> splitProducers() {
+        return Arrays.stream(producers.split(",|and")).map(producer -> Movie.builder()
+                .year(year)
+                .title(title)
+                .studios(studios)
+                .producers(producer.trim())
+                .winner(winner)
+                .build())
+                .collect(Collectors.toList());
+    }
 
     public static Movie of(CSVRecord record) {
         return Movie.builder()

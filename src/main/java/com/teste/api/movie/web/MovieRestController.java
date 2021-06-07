@@ -44,10 +44,14 @@ public class MovieRestController {
         List<Movie> winningMovies = movieQuery.findAll(movieWinner());
 
         Map<String, List<Movie>> moviesPerProducers = winningMovies.stream()
+                .flatMap(m -> m.splitProducers().stream())
+                .collect(Collectors.toSet())
+                .stream()
                 .collect(groupingBy(Movie::getProducers))
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().size() >= 2)
+                .sorted()
                 .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
 
         List<MovieIntervalResponse> resultMin = moviesPerProducers.entrySet().stream().filter(e -> e.getValue().get(1).getYear() - e.getValue().get(0).getYear() <= 1)
