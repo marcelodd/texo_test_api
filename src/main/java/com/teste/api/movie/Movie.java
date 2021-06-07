@@ -9,7 +9,6 @@ import org.apache.commons.csv.CSVRecord;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,11 +21,11 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Movie implements Serializable {
+public class Movie implements Comparable<Movie> {
     @Id
     @GeneratedValue
     private Long id;
-    private int year;
+    private Integer year;
     private String title;
     private String studios;
     private String producers;
@@ -51,5 +50,10 @@ public class Movie implements Serializable {
                 .producers(record.get(3))
                 .winner(record.size() > 4 && record.get(4).equals("yes"))
                 .build();
+    }
+
+    @Override
+    public int compareTo(Movie o) {
+        return year.compareTo(o.getYear());
     }
 }

@@ -8,10 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.teste.api.movie.MovieSpecification.movieWinner;
@@ -45,27 +42,26 @@ public class MovieRestController {
 
         Map<String, List<Movie>> moviesPerProducers = winningMovies.stream()
                 .flatMap(m -> m.splitProducers().stream())
-                .collect(Collectors.toSet())
-                .stream()
+                .sorted()
                 .collect(groupingBy(Movie::getProducers))
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().size() >= 2)
-                .sorted()
                 .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
 
-        List<MovieIntervalResponse> resultMin = moviesPerProducers.entrySet().stream().filter(e -> e.getValue().get(1).getYear() - e.getValue().get(0).getYear() <= 1)
+        MovieIntervalResponse resultMin = moviesPerProducers.entrySet().stream().filter(e -> e.getValue().get(1).getYear() - e.getValue().get(0).getYear() <= 1)
                 .map(e -> MovieIntervalResponse.of(e))
-                .collect(Collectors.toList());
+                .min(Comparator.comparing(MovieIntervalResponse::getInterval))
+                .get();
 
-        List<MovieIntervalResponse> resultMax = moviesPerProducers.entrySet().stream().filter(e -> e.getValue().get(1).getYear() - e.getValue().get(0).getYear() > 1)
+        MovieIntervalResponse resultMax = moviesPerProducers.entrySet().stream().filter(e -> e.getValue().get(1).getYear() - e.getValue().get(0).getYear() > 1)
                 .map(e -> MovieIntervalResponse.of(e))
-                .sorted()
-                .collect(Collectors.toList());
+                .max(Comparator.comparing(MovieIntervalResponse::getInterval))
+                .get();
 
         return ResponseEntity.ok(new HashMap<String, List<MovieIntervalResponse>>() {{
-            put("min", resultMin);
-            put("max", resultMax);
+            put("min", Collections.singletonList(resultMin));
+            put("max", Collections.singletonList(resultMax));
         }});
     }
 }

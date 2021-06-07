@@ -13,7 +13,7 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MovieIntervalResponse implements Comparable<MovieIntervalResponse>{
+public class MovieIntervalResponse implements Comparable<MovieIntervalResponse> {
     private String producer;
     private Integer interval;
     private Integer previousWin;
