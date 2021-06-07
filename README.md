@@ -14,3 +14,5 @@ API TEST TEXO
     * mvnw spring-boot:run
 
 [TESTE](http://localhost:8080/swagger-ui.html) Use esta página para testar
+
+[HEROKU](https://app-texo.herokuapp.com/swagger-ui.html) Se preferir teste diretamente no Heroku
