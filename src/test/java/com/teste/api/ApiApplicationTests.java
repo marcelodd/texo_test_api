@@ -29,7 +29,7 @@ class ApiApplicationTests {
 
     @Test
     void moviesCsvImport() throws Exception {
-        MockMultipartFile multipartFile = new MockMultipartFile("file", "movielist.csv", "text/plain", csvFile.getInputStream());
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "movielist.csv", "text/csv", csvFile.getInputStream());
         mockMvc.perform(multipart("/v1/movies/csv/import")
                 .file(multipartFile))
                 .andExpect(status().isOk());
