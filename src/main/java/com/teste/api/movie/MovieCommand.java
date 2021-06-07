@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author Marcelo Castro - marceloddcastro@gmail.com
- * @date 03/06/2021 11:13
  */
 @Service
 @AllArgsConstructor
@@ -26,7 +25,7 @@ public class MovieCommand {
 
     public List<Movie> csvToMovies(MultipartFile csv) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(csv.getInputStream(), "UTF-8"));
-             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.EXCEL.withDelimiter(';').withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
             return csvParser.getRecords()
                     .stream()
                     .map(r -> Movie.of(r))

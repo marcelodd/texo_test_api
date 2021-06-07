@@ -10,7 +10,6 @@ import java.io.Serializable;
 
 /**
  * @author Marcelo Castro - marceloddcastro@gmail.com
- * @date 03/06/2021 11:01
  */
 @Entity
 @Getter
@@ -33,7 +32,7 @@ public class Movie implements Serializable {
                 .title(record.get(1))
                 .studios(record.get(2))
                 .producers(record.get(3))
-                .winner(record.size() > 4 && record.get(5).equals("yes"))
+                .winner(record.size() > 4 && record.get(4).equals("yes"))
                 .build();
     }
 }
